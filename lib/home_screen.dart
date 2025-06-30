@@ -140,6 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             child: Column(
                               children: [
+                                // For email
                                 Row(
                                   children: [
                                     Icon(
@@ -147,16 +148,28 @@ class _HomeScreenState extends State<HomeScreen> {
                                       color: AppColor.darkBlue,
                                     ),
                                     SizedBox(width: width * 0.02),
-                                    Text(contact.email),
+                                    Expanded(
+                                      child: Text(
+                                        contact.email,
+                                        textAlign: TextAlign.start,
+                                        softWrap: true,
+                                      ),
+                                    ),
                                   ],
                                 ),
 
-                                SizedBox(height: height * 0.01),
+                                // For phone
                                 Row(
                                   children: [
                                     Icon(Icons.phone, color: AppColor.darkBlue),
                                     SizedBox(width: width * 0.02),
-                                    Text(contact.phone),
+                                    Expanded(
+                                      child: Text(
+                                        contact.phone,
+                                        textAlign: TextAlign.start,
+                                        softWrap: true,
+                                      ),
+                                    ),
                                   ],
                                 ),
                                 SizedBox(
