@@ -10,7 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class BottomSheetWidget extends StatefulWidget {
-  BottomSheetWidget({super.key});
+  final ContactModel? contact;
+  const BottomSheetWidget({super.key, this.contact});
 
   @override
   State<BottomSheetWidget> createState() => _BottomSheetWidgetState();
@@ -35,6 +36,17 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
       setState(() {
         _pickedImage = image;
       });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.contact != null) {
+      userName = widget.contact!.name;
+      email = widget.contact!.email;
+      phoneNumber = widget.contact!.phone;
+      _pickedImage = widget.contact!.image;
     }
   }
 
