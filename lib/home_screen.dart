@@ -75,40 +75,155 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
               )
-            : ListView.builder(
+            : GridView.builder(
                 padding: const EdgeInsets.all(16),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 10,
+                  mainAxisSpacing: 10,
+                  childAspectRatio: 0.65,
+                ),
                 itemCount: contacts.length,
                 itemBuilder: (context, index) {
                   final contact = contacts[index];
-                  return Card(
-                    color: AppColor.darkBlue,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: ListTile(
-                      leading: contact.image != null
-                          ? CircleAvatar(
-                              backgroundImage: FileImage(
-                                File(contact.image!.path),
+                  return InkWell(
+                    onTap: () {
+                      _editContact(context, index);
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.red,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          // Contact image
+                          Expanded(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: contact.image != null
+                                      ? FileImage(File(contact.image!.path))
+                                      : const AssetImage(AppAssets.imagePicker),
+                                  fit: BoxFit.cover,
+                                ),
                               ),
-                            )
-                          : const CircleAvatar(child: Icon(Icons.person)),
-                      title: Text(contact.name, style: AppStyle.titleMedium),
-                      subtitle: Text(contact.email),
-                      trailing: Text(contact.phone),
-                      onTap: () {
-                        _editContact(context, index);
-                      },
+                              child: Stack(
+                                alignment: Alignment.bottomLeft,
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.all(8),
+                                    padding: EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      color: AppColor.gold,
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Text(
+                                      contact.name,
+                                      style: AppStyle.cardTitle,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: AppColor.gold,
+                              borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(16),
+                                bottomRight: Radius.circular(16),
+                              ),
+                            ),
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(
+                                      Icons.mail_rounded,
+                                      color: AppColor.darkBlue,
+                                    ),
+                                    SizedBox(width: width * 0.02),
+                                    Text(contact.email),
+                                  ],
+                                ),
+
+                                SizedBox(height: height * 0.01),
+                                Row(
+                                  children: [
+                                    Icon(Icons.phone, color: AppColor.darkBlue),
+                                    SizedBox(width: width * 0.02),
+                                    Text(contact.phone),
+                                  ],
+                                ),
+                                SizedBox(
+                                  width: double.infinity,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        contacts.removeAt(index);
+                                      });
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.red,
+                                      foregroundColor: AppColor.gold,
+                                      overlayColor: AppColor.transparentColor,
+                                      padding: const EdgeInsets.all(8),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      textStyle: AppStyle.titleMedium,
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(Icons.delete),
+                                        SizedBox(width: width * 0.02),
+                                        Text("Delete"),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 },
               ),
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: AppColor.gold,
-          child: const Icon(Icons.add),
-          onPressed: () {
-            _addContact(context);
-          },
+        floatingActionButton: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (contacts.isNotEmpty)
+              FloatingActionButton(
+                backgroundColor: Colors.red,
+                heroTag: 'delete',
+                child: const Icon(Icons.delete, color: AppColor.gold),
+                onPressed: () {
+                  if (contacts.isNotEmpty) {
+                    setState(() {
+                      contacts.removeLast();
+                    });
+                  }
+                },
+              ),
+            const SizedBox(height: 12),
+            if (contacts.length < 6)
+              FloatingActionButton(
+                backgroundColor: AppColor.gold,
+                heroTag: 'add',
+                child: const Icon(Icons.add, color: AppColor.darkBlue),
+                onPressed: () {
+                  _addContact(context);
+                },
+              ),
+          ],
         ),
       ),
     );

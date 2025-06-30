@@ -19,4 +19,10 @@ class AppStyle {
     fontWeight: FontWeight.bold,
     color: AppColor.gold,
   );
+
+  static const TextStyle cardTitle = TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
+    color: AppColor.darkBlue
+  );
 }

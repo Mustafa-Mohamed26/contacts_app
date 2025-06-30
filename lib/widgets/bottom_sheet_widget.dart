@@ -100,16 +100,16 @@ class _BottomSheetWidgetState extends State<BottomSheetWidget> {
               children: [
                 GestureDetector(
                   onTap: _pickImage,
-                  child: _pickedImage == null
-                      ? Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: AppColor.gold),
-                            borderRadius: BorderRadius.circular(28),
-                          ),
-                          child: Image.asset(AppAssets.imagePicker),
-                        )
-                      : null,
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: AppColor.gold),
+                      borderRadius: BorderRadius.circular(28),
+                    ),
+                    child: _pickedImage == null
+                        ? Image.asset(AppAssets.imagePicker)
+                        : Image.file(File(_pickedImage!.path)),
+                  ),
                 ),
                 SizedBox(width: width * 0.02),
                 Expanded(
